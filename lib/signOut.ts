@@ -8,7 +8,7 @@ export async function signOut() {
   cookies().delete("my-custom-session");
 
   console.log("hello")
-  await account.deleteSession("current");
+  await account?.deleteSession("current");
 
   redirect("/signup");
 }

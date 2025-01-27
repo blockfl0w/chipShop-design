@@ -1,4 +1,12 @@
-import { Archive, Calendar, ChevronUp, Home, Inbox, Search, Settings, User2 } from "lucide-react"
+import {
+  Archive,
+  ChevronUp,
+  Home,
+  Inbox,
+  Settings,
+  User2,
+  Store,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -6,65 +14,65 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
+} from "@/components/ui/sidebar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
-import { getLoggedInUser } from "@/lib/server/appwrite"
-import Link from "next/link"
-import { ModeToggle } from "./modeToggle"
-import SignOutButton from "./signOutButton"
+import { getLoggedInUser } from "@/lib/server/appwrite";
+import Link from "next/link";
+import { ModeToggle } from "./modeToggle";
+import SignOutButton from "./signOutButton";
 
 // Menu items.
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/",
     icon: Home,
   },
   {
+    title: "Stock",
+    url: "/stock",
+    icon: Archive,
+  },
+  {
     title: "Inbox",
-    url: "/signin",
+    url: "/inbox",
     icon: Inbox,
   },
   {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
+    title: "Stores",
+    url: "/stores",
+    icon: Store,
   },
   {
     title: "Settings",
-    url: "#",
+    url: "/settings",
     icon: Settings,
   },
-]
-
-
-
+];
 
 export async function Nav() {
-  const user = await getLoggedInUser()
+  const user = await getLoggedInUser();
 
-  if (user !== null) {
-    console.log(user)
-  }
   return (
     <Sidebar>
-    <SidebarHeader>
-        <div className="flex gap-2 items-center"><Archive strokeWidth={2} /><h1 className="text-2xl !font-extrabold">ShelfSpace</h1></div>
-    </SidebarHeader>
+      <SidebarHeader>
+        <div className="flex gap-2 items-center px-2">
+          <h1 className="text-2xl !font-extrabold">ShelfSpace</h1>
+        </div>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          {/* <SidebarGroupLabel>Application</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -81,45 +89,51 @@ export async function Nav() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-        <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem className="flex gap-4 items-center">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton>
-                    <User2 strokeWidth={3} /> {user? user.name: "Sign in"}
-                    <ChevronUp className="ml-auto" />
-                  </SidebarMenuButton>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  side="top"
-                  className="w-[--radix-popper-anchor-width]"
-                >
-                  {user? <div>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem className="flex gap-4 items-center">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton>
+                  <User2 strokeWidth={3} /> {user ? user.name : "Sign in"}
+                  <ChevronUp className="ml-auto" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="top"
+                className="w-[--radix-popper-anchor-width]"
+              >
+                {user ? (
+                  <div>
                     <DropdownMenuItem asChild>
-                      <Link href="/account" className="cursor-pointer">Account</Link>
+                      <Link href="/settings" className="cursor-pointer">
+                        Settings
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/settings" className="cursor-pointer">Settings</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
                       <SignOutButton />
                     </DropdownMenuItem>
-                  </div>: <div>
+                  </div>
+                ) : (
+                  <div>
                     <DropdownMenuItem asChild>
-                      <Link href="signup" className="cursor-pointer">Sign up</Link>
+                      <Link href="signup" className="cursor-pointer">
+                        Sign up
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/signin" className="cursor-pointer">Sign in</Link>
+                      <Link href="/signin" className="cursor-pointer">
+                        Sign in
+                      </Link>
                     </DropdownMenuItem>
-                  </div>}
-                  
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <ModeToggle />
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>          
+                  </div>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <ModeToggle />
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

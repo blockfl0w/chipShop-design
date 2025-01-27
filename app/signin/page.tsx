@@ -9,5 +9,5 @@ export default async function Login() {
     redirect("/")
   }
 
-  return <ProfileForm  />
+  return (<div className="p-4"><ProfileForm /></div>)
 }
